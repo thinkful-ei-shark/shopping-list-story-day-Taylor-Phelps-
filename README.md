@@ -1,5 +1,3 @@
-## Shopping List Starter
+## Thinkful Shopping-List-Edit
 
-#### Created for the Thinkful EI Program.
-
-Please reference the startup instructions within your curriculum.
+[Preview](https://thinkful-ei-shark.github.io/shopping-list-story-day-Taylor-Phelps-/)
