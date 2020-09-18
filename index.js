@@ -9,10 +9,10 @@ const store = {
 };
 
 const generateItemElement = function (item) {
-  let itemTitle = `<span class='shopping-item shopping-item__checked'>${item.name}</span>`;
+  let itemTitle = `<span id=${item.id} class='shopping-item shopping-item__checked'>${item.name}</span>`;
   if (!item.checked) {
     itemTitle = `
-     <span class='shopping-item'>${item.name}</span>
+     <span id=${item.id} class='shopping-item'>${item.name}</span>
     `;
   }
 
@@ -26,6 +26,9 @@ const generateItemElement = function (item) {
         <button class='shopping-item-delete js-item-delete'>
           <span class='button-label'>delete</span>
         </button>
+        <button class='shopping-item-edit js-item-edit'>
+          <span class='button-label'>Edit</span>
+          </button>
       </div>
     </li>`;
 };
@@ -127,6 +130,38 @@ const handleDeleteItemClicked = function () {
   });
 };
 
+
+const editListItem = function (id) {
+   let editBox = '<form class="edit-form"><input name="'+id+'" class="editbox"></input></form>'
+  $('#' + id).replaceWith(editBox);
+}
+
+  const handleSubmitEdit = function () {
+  $('body').on('submit', '.edit-form', function(event) {
+    event.preventDefault();
+    let input = $(event.currentTarget).find('.editbox');
+    let id = input.attr('name');
+    let text = input.val();
+    const index = store.items.findIndex(item => item.id === id);
+
+    store.items[index].name = text;
+
+    render();
+  })
+}
+
+const handleItemEdit = function () {
+  $('body').on('click', '.shopping-item-edit', function(event) {
+    event.preventDefault();
+    $('.edit-form').remove();
+    const id = getItemIdFromElement(event.currentTarget);
+
+    render();
+
+    editListItem(id);
+  });
+}
+
 /**
  * Toggles the store.hideCheckedItems property
  */
@@ -160,6 +195,8 @@ const handleShoppingList = function () {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleToggleFilterClick();
+  handleItemEdit();
+  handleSubmitEdit();
 };
 
 // when the page loads, call `handleShoppingList`
